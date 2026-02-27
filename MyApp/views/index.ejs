@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人情報検索・登録システム</title>
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; padding: 20px; color: #333; background-color: #f0f2f5; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        section { padding: 20px; margin-bottom: 30px; border: 1px solid #eee; border-radius: 8px; }
+        h1 { text-align: center; color: red; }
+        h2 { font-size: 1.2em; margin-bottom: 15px; color: #555; border-left: 4px solid #1a73e8; padding-left: 10px; }
+        
+        /* 検索フォームの横並び設定 */
+        .search-form { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .search-label { font-weight: bold; margin-right: 5px; }
+        
+        .form-group { margin-bottom: 15px; }
+        input, select { padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+        
+        /* 検索ボックス専用の幅調整 */
+        .select-box { width: 160px; }
+        .keyword-input { flex: 1; min-width: 200px; }
+        
+        .input-split { width: calc(50% - 15px); }
+        .input-full { width: 100%; box-sizing: border-box; }
+        
+        button { padding: 10px 25px; background: #1a73e8; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #1557b0; }
+        .clear-link { font-size: 0.9em; color: #666; text-decoration: none; margin-left: 10px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background: #f8f9fa; }
+        tr:nth-child(even) { background-color: #fafafa; }
+        .no-result { color: #888; text-align: center; padding: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>個人情報管理システム</h1>
+
+    <section style="background-color: #f8f9fa;">
+        <h2>データを検索する</h2>
+        <form action="/" method="GET" class="search-form">
+            <span class="search-label">検索項目：</span>
+            <select name="searchType" class="select-box">
+                <option value="name" <%= searchType === 'name' ? 'selected' : '' %>>氏名</option>
+                <option value="gender" <%= searchType === 'gender' ? 'selected' : '' %>>性別</option>
+                <option value="age" <%= searchType === 'age' ? 'selected' : '' %>>年齢</option>
+                <option value="address" <%= searchType === 'address' ? 'selected' : '' %>>住所</option>
+            </select>
+
+            <span class="search-label">キーワード：</span>
+            <input type="text" name="keyword" placeholder="キーワードを入力してください" value="<%= keyword %>" class="keyword-input">
+            
+            <button type="submit">検索実行</button>
+            <% if (keyword) { %>
+                <a href="/" class="clear-link">リセット</a>
+            <% } %>
+        </form>
+    </section>
+
+    <section>
+        <h2>新規データ登録</h2>
+        <form action="/register" method="POST">
+            <div class="form-group">
+                <label for="姓" style="font-weight: bold; margin-right: 5px;">姓：</label>
+                <input type="text" name="lastName" placeholder="姓" required class="input-split"> <br>
+
+                <label for="名" style="font-weight: bold; margin-right: 5px;">名：</label>
+                <input type="text" name="firstName" placeholder="名" required class="input-split">
+            </div>
+            <div class="form-group">
+                <label for="せい" style="font-weight: bold; margin-right: 5px;">せい：</label>
+                <input type="text" name="lastfurigana" placeholder="せい" required class="input-split"> <br>
+
+                <label for="めい" style="font-weight: bold; margin-right: 5px;">めい：</label>  
+                <input type="text" name="firstfurigana" placeholder="めい" required class="input-split">
+            </div>
+            <div class="form-group">
+                <label for="gender" style="font-weight: bold; margin-right: 5px;">性別：</label>
+                <select name="gender" style="width: 30%; margin-right: 10px;">
+                    <option value="未選択">性別を選択</option>
+                    <option value="男性">男性</option>
+                    <option value="女性">女性</option>
+                    <option value="その他">その他</option>
+                </select>
+                <label for="age" style="font-weight: bold; margin-right: 5px;">年齢：</label>
+                <input type="number" name="age" placeholder="年齢" required style="width: 20%;">
+            </div>
+            <div class="form-group">
+                <label for="email" style="font-weight: bold; margin-right: 5px;">メールアドレス：</label>
+                <input type="email" name="email" placeholder="メールアドレス" required class="input-full">
+            </div>
+            <div class="form-group">
+                <label for="address" style="font-weight: bold; margin-right: 5px;">住所：</label>
+                <input type="text" name="address" placeholder="住所" required class="input-full">
+            </div>
+            <div class="form-group">
+                <label for="phone" style="font-weight: bold; margin-right: 5px;">電話番号：</label>
+                <input type="text" name="phone" placeholder="電話番号" required class="input-full">
+            </div>
+            <button type="submit" style="width: 100%; background-color: #34a853;">新規登録を保存する</button>
+        </form>
+    </section>
+
+    <section style="border: none;">
+        <% if (keyword === "") { %>
+            <p class="no-result">検索条件を入力して「検索実行」ボタンを押してください。</p>
+        <% } else if (users.length > 0) { %>
+            <h2>「<%= keyword %>」の検索結果: <%= users.length %> 件</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>氏名</th><th>性別</th><th>年齢</th><th>メールアドレス</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach(user => { %>
+                        <tr>
+                            <td><%= user.lastName %> <%= user.firstName %></td>
+                            <td><%= user.gender %></td>
+                            <td><%= user.age %>歳</td>
+                            <td><%= user.email %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p class="no-result">一致するデータが見つかりませんでした。</p>
+        <% } %>
+    </section>
+</div>
+</body>
+</html>
