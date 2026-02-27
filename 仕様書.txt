@@ -1,0 +1,4 @@
+・Node.js / JavaScriptを使用したシステムやツールの作成
+・GitHubにリポジトリ（Assigment）を作成してコードを管理
+・README.mdをコミットして、作成したソフトウェアの説明と利用法を記述する
+
