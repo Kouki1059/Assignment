@@ -1,0 +1,114 @@
+const { writeFile } = require('fs');
+
+for (let i = 0; i < 100; i++) {
+    const text = `write: ${i}`;
+    writeFile('./data.txt', text, (err) => {
+        if (err) {
+            return console.error(err);
+        }
+        console.log(text);
+    });
+}
+
+/*
+write: 0
+write: 1
+write: 6
+write: 5
+write: 3
+write: 4
+write: 8
+write: 7
+write: 2
+write: 9
+write: 11
+write: 12
+write: 10
+write: 14
+write: 15
+write: 17
+write: 18
+write: 19
+write: 13
+write: 16
+write: 20
+write: 21
+write: 24
+write: 25
+write: 23
+write: 27
+write: 22
+write: 26
+write: 29
+write: 30
+write: 31
+write: 33
+write: 32
+write: 34
+write: 35
+write: 36
+write: 28
+write: 37
+write: 38
+write: 39
+write: 41
+write: 42
+write: 43
+write: 44
+write: 45
+write: 46
+write: 47
+write: 48
+write: 40
+write: 49
+write: 51
+write: 50
+write: 52
+write: 56
+write: 55
+write: 53
+write: 59
+write: 57
+write: 61
+write: 54
+write: 60
+write: 62
+write: 64
+write: 68
+write: 66
+write: 63
+write: 69
+write: 58
+write: 67
+write: 72
+write: 73
+write: 65
+write: 74
+write: 75
+write: 76
+write: 70
+write: 79
+write: 77
+write: 78
+write: 80
+write: 81
+write: 82
+write: 83
+write: 84
+write: 86
+write: 88
+write: 89
+write: 90
+write: 87
+write: 71
+write: 91
+write: 85
+write: 92
+write: 96
+write: 95
+write: 97
+write: 93
+write: 98
+write: 99
+write: 94
+*/
